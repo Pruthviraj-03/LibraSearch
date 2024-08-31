@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { FiSearch } from "react-icons/fi";
-import { Header, ScrollToTop, Spinner } from "../components/index";
+import { Header, ScrollToTop, Spinner, NotFound } from "../components/index";
 
 const Books = () => {
   const [books, setBooks] = useState([]);
@@ -143,6 +143,8 @@ const Books = () => {
 
         {loading ? (
           <Spinner />
+        ) : filteredBooks.length === 0 ? (
+          <NotFound search={search} />
         ) : (
           <div className="mx-auto w-4/5 flex flex-wrap gap-11 py-10">
             {filteredBooks.map((curElem) => {
