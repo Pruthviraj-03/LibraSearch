@@ -44,7 +44,7 @@ const LimBooks = () => {
   };
 
   return (
-    <div className="py-20 w-full bg-gray-100 mobile:py-8">
+    <div className="py-20 w-full bg-gray-100 mobile:py-8 mobile:mt-110">
       {loading ? (
         <Spinner />
       ) : (

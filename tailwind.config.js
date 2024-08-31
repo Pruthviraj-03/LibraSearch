@@ -15,6 +15,9 @@ module.exports = {
       fontSize: {
         17: "17px",
       },
+      margin: {
+        110: "-110px",
+      },
     },
   },
   plugins: [],
