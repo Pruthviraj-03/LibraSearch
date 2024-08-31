@@ -28,7 +28,7 @@ const Hero = () => {
               Find and Read your Favourite Books easily.
             </p>
             <div className="my-4 mx-8">
-              <Button text="Find Now" />
+              <Button text="Find Now" to="/books" />
             </div>
           </div>
         </div>

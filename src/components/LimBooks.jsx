@@ -66,7 +66,7 @@ const LimBooks = () => {
       </div>
 
       <div className="flex items-center justify-center h-auto w-full">
-        <Button text="View more Books ..." />
+        <Button text="View more Books ..." to="/books" />
       </div>
     </div>
   );

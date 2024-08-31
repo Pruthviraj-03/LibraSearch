@@ -13,7 +13,7 @@ const Footer = () => {
 
   return (
     <div className="w-full">
-      <div className="flex flex-row items-center justify-between px-6 py-4 bg-white">
+      <div className="flex flex-row items-center justify-between px-6 pb-4 bg-white">
         <span
           onClick={handleRefreshPage}
           className="font-nunito text-xl font-bold text-gray-800 hover:text-gray-500 cursor-pointer"
