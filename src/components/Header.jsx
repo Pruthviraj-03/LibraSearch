@@ -10,6 +10,11 @@ const Header = () => {
     window.location.reload();
   };
 
+  const handleBooksRefreshPage = () => {
+    navigate("/books");
+    window.location.reload();
+  };
+
   return (
     <div>
       <div className="bg-white shadow w-full px-44">
@@ -26,14 +31,15 @@ const Header = () => {
               <Link
                 to="/"
                 className="px-2 py-1 text-lg font-medium text-gray-700 rounded hover:bg-gray-900 hover:text-gray-100"
+                onClick={handleRefreshPage}
               >
                 Home
               </Link>
 
               <Link
                 to="/books"
-                className="px-2 py-1 text-lg font-medium text-gray-700 rounded hover:bg-gray-900 hover:text-gray-100
-                   "
+                className="px-2 py-1 text-lg font-medium text-gray-700 rounded hover:bg-gray-900 hover:text-gray-100"
+                onClick={handleBooksRefreshPage}
               >
                 All Books
               </Link>
