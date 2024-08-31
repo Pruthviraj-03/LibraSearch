@@ -44,7 +44,7 @@ Clone the repository:
 
 bash
 Copy code
-git clone https://github.com/yourusername/LibraSearch.git
+git clone https://github.com/Pruthviraj-03/LibraSearch.git
 cd LibraSearch
 Install dependencies:
 
