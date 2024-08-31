@@ -10,23 +10,20 @@ const Books = () => {
   const [selectedSortOption, setSelectedSortOption] = useState("Recommended");
   const [loading, setLoading] = useState(false);
 
-  const shuffleArray = (array) => {
-    return array.sort(() => Math.random() - 0.5);
-  };
+  const shuffleArray = (array) => array.sort(() => Math.random() - 0.5);
 
   const getData = async () => {
     try {
       setLoading(true);
       const res = await axios.get(
-        "https://api.nytimes.com/svc/books/v3/lists/current/hardcover-fiction.json?api-key=bvvivAeO3fEKT66GAXKZU6DRfHSdNksv"
+        "http://openlibrary.org/search.json?title=the+lord+of+the+rings"
       );
-      const shuffledBooks = shuffleArray(res.data.results.books);
+      const shuffledBooks = shuffleArray(res.data.docs);
       setBooks(shuffledBooks);
-      setSelectedSortOption("Recommended");
-      setFilteredBooks(shuffledBooks);
       setLoading(false);
     } catch (error) {
       console.log(error);
+      setLoading(false);
     }
   };
 
@@ -38,15 +35,27 @@ const Books = () => {
     const sortBooks = (books) => {
       switch (selectedSortOption) {
         case "Title Ascending (A-Z)":
-          return [...books].sort((a, b) => a.title.localeCompare(b.title));
+          return [...books].sort((a, b) =>
+            (a.title || "").localeCompare(b.title || "")
+          );
         case "Title Descending (Z-A)":
-          return [...books].sort((a, b) => b.title.localeCompare(a.title));
+          return [...books].sort((a, b) =>
+            (b.title || "").localeCompare(a.title || "")
+          );
         case "Author Ascending (A-Z)":
-          return [...books].sort((a, b) => a.author.localeCompare(b.author));
+          return [...books].sort((a, b) =>
+            ((a.author_name && a.author_name[0]) || "").localeCompare(
+              (b.author_name && b.author_name[0]) || ""
+            )
+          );
         case "Rank By Top 10":
-          return [...books].sort((a, b) => a.rank - b.rank).slice(0, 10);
-        case "Most Weeks on List":
-          return [...books].sort((a, b) => b.weeks_on_list - a.weeks_on_list);
+          return [...books]
+            .sort(
+              (a, b) =>
+                ((a.key && Number(a.key)) || 0) -
+                ((b.key && Number(b.key)) || 0)
+            )
+            .slice(0, 10);
         case "Recommended":
         default:
           return [...books];
@@ -59,17 +68,24 @@ const Books = () => {
   useEffect(() => {
     const results = books.filter(
       (book) =>
-        book.title.toLowerCase().includes(search.toLowerCase()) ||
-        book.author.toLowerCase().includes(search.toLowerCase())
+        (book.title || "").toLowerCase().includes(search.toLowerCase()) ||
+        ((book.author_name && book.author_name[0]) || "")
+          .toLowerCase()
+          .includes(search.toLowerCase())
     );
     setFilteredBooks(results);
   }, [search, books]);
 
+  const titleTrim = (content, maxLength = 30) => {
+    return content.length > maxLength
+      ? content.slice(0, maxLength) + "..."
+      : content;
+  };
+
   const descTrim = (content, maxLength = 120) => {
-    if (content.length > maxLength) {
-      return content.slice(0, maxLength) + "...";
-    }
-    return content;
+    return content.length > maxLength
+      ? content.slice(0, maxLength) + "..."
+      : content;
   };
 
   return (
@@ -124,18 +140,6 @@ const Books = () => {
                 >
                   Author Ascending (A-Z)
                 </h1>
-                <h1
-                  className="text-sm text-gray-800 py-3 px-4 no-underline block hover:bg-gray-200 cursor-pointer"
-                  onClick={() => setSelectedSortOption("Rank By Top 10")}
-                >
-                  Rank By Top 10
-                </h1>
-                <h1
-                  className="text-sm text-gray-800 py-3 px-4 no-underline block hover:bg-gray-200 cursor-pointer"
-                  onClick={() => setSelectedSortOption("Most Weeks on List")}
-                >
-                  Most Weeks on List
-                </h1>
               </div>
             </div>
           </div>
@@ -146,37 +150,56 @@ const Books = () => {
         ) : filteredBooks.length === 0 ? (
           <NotFound search={search} />
         ) : (
-          <div className="mx-auto w-4/5 flex flex-wrap gap-11 py-10 laptop:w-11/12 tablet:w-11/12">
-            {filteredBooks.map((curElem) => {
-              return (
-                <div
-                  key={curElem.rank}
-                  className="max-w-xs mx-auto overflow-hidden bg-white rounded-lg shadow-xl border"
-                >
-                  <img
-                    className="object-cover w-full h-48 mt-1"
-                    src={curElem.book_image}
-                    alt="book cover"
-                  />
+          <div className="mx-auto w-4/5 flex flex-wrap gap-11 py-10 laptop:w-11/12 tablet:w-11/12 tablet:mt-96 tablet:pt-30 mobile:py-0 mobile:pt-10">
+            {filteredBooks
+              .filter(
+                (curElem) =>
+                  curElem.key &&
+                  curElem.cover_edition_key &&
+                  curElem.title &&
+                  Array.isArray(curElem.author_name) &&
+                  curElem.author_name.length > 0 &&
+                  Array.isArray(curElem.publish_year) &&
+                  curElem.publish_year.length > 0
+              )
+              .map((curElem) => {
+                const key = curElem.key;
+                const image = `https://covers.openlibrary.org/b/olid/${curElem.cover_edition_key}-L.jpg`;
+                const title = curElem.title;
+                const author = curElem.author_name[0];
+                const publish_year = curElem.publish_year[0];
+                const description = curElem.first_sentence
+                  ? curElem.first_sentence[0]
+                  : "Description not available";
 
-                  <div className="px-4 py-2 h-72">
-                    <h1 className="text-3xl font-bold text-gray-800 uppercase">
-                      {curElem.title}
-                    </h1>
-                    <h1 className="text-lg font-bold py-2">${curElem.price}</h1>
-                    <h1 className="text-lg font-bold py-2">
-                      Author: {curElem.author}
-                    </h1>
-                    <h1 className="text-lg font-bold py-2">
-                      Published Year: 2024
-                    </h1>
-                    <p className="mt-1 text-sm text-gray-600">
-                      {descTrim(curElem.description)}
-                    </p>
+                return (
+                  <div
+                    key={key}
+                    className="max-w-xs mx-auto overflow-hidden bg-white rounded-lg shadow-xl"
+                  >
+                    <img
+                      className="object-cover w-full h-48 mt-1"
+                      src={image}
+                      alt={`${title} cover`}
+                    />
+
+                    <div className="px-4 py-2 h-72">
+                      <h1 className="text-3xl font-bold text-gray-800 uppercase">
+                        {titleTrim(title)}
+                      </h1>
+                      <h1 className="text-lg font-bold py-2">
+                        Author: {author}
+                      </h1>
+                      <h1 className="text-lg font-bold py-2">
+                        Published Year: {publish_year}
+                      </h1>
+                      <p className="mt-1 text-sm text-gray-600">
+                        {descTrim(description)}
+                      </p>
+                    </div>
                   </div>
-                </div>
-              );
-            })}
+                );
+              })}
           </div>
         )}
       </div>
