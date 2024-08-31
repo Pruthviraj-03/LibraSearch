@@ -14,13 +14,15 @@ const LimBooks = () => {
     try {
       setLoading(true);
       const res = await axios.get(
-        "https://api.nytimes.com/svc/books/v3/lists/current/hardcover-fiction.json?api-key=bvvivAeO3fEKT66GAXKZU6DRfHSdNksv"
+        "http://openlibrary.org/search.json?title=the+lord+of+the+rings"
       );
-      const shuffledBooks = shuffleArray(res.data.results.books);
+      const shuffledBooks = shuffleArray(res.data.docs);
+      console.log(res.data.docs);
       setBooks(shuffledBooks);
       setLoading(false);
     } catch (error) {
       console.log(error);
+      setLoading(false);
     }
   };
 
