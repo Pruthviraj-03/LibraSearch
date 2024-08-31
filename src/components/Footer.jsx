@@ -13,7 +13,7 @@ const Footer = () => {
 
   return (
     <div className="w-full">
-      <div className="flex flex-row items-center justify-between px-6 pb-4 bg-white">
+      <div className="flex flex-row items-center justify-between px-6 pb-4 bg-white mobile:flex-col">
         <span
           onClick={handleRefreshPage}
           className="font-nunito text-xl font-bold text-gray-800 hover:text-gray-500 cursor-pointer"
@@ -21,7 +21,7 @@ const Footer = () => {
           LibraSearch
         </span>
 
-        <p className="font-nunito py-2 text-gray-800">
+        <p className="font-nunito py-2 text-gray-800 mobile:text-sm">
           all rights reserved @https://github.com/Pruthviraj-03/
         </p>
 

@@ -76,9 +76,9 @@ const Books = () => {
     <div>
       <Header />
       <div className="flex flex-col items-center w-full h-auto bg-gray-100">
-        <div className="flex flex-row w-4/5 justify-center items-center">
-          <div className="flex w-3/4 mx-auto mb-10 pt-20 gap-1">
-            <FiSearch className="text-3xl m-auto relative left-12 text-gray-400" />
+        <div className="flex flex-row w-4/5 h-auto justify-center items-center mt-10 laptop:w-5/6 tablet:w-full mobile:w-screen mobile:flex-col mobile:mt-8">
+          <div className="flex w-3/4 gap-1 mr-8 tablet:w-4/6 mobile:w-11/12 mobile:h-10">
+            <FiSearch className="text-3xl m-auto relative left-12 text-gray-400 mobile:text-2xl mobile:left-10" />
             <input
               type="text"
               placeholder="Search Your Book..."
@@ -87,7 +87,7 @@ const Books = () => {
             />
           </div>
 
-          <div className="relative flex items-center mt-10 justify-center flex-row bg-white w-1/5 h-14 rounded-md cursor-pointer border border-gray-400">
+          <div className="flex items-center justify-center flex-row bg-white w-1/5 h-14 rounded-md cursor-pointer border border-gray-400 mr-5 laptop:w-4/12 tablet:w-5/12 mobile:mt-4 mobile:w-10/12 mobile:mr-2 mobile:h-10">
             <span className="font-nunito text-md text-gray-900 mr-2">
               Sort by:
             </span>
@@ -146,7 +146,7 @@ const Books = () => {
         ) : filteredBooks.length === 0 ? (
           <NotFound search={search} />
         ) : (
-          <div className="mx-auto w-4/5 flex flex-wrap gap-11 py-10">
+          <div className="mx-auto w-4/5 flex flex-wrap gap-11 py-10 laptop:w-11/12 tablet:w-11/12">
             {filteredBooks.map((curElem) => {
               return (
                 <div

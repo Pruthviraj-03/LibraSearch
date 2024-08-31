@@ -5,7 +5,7 @@ const Button = ({ text, to }) => {
   return (
     <button
       className="bg-gray-800 text-white text-xl rounded-md shadow-xl px-4 py-1.5
-                border border-white hover:bg-white hover:text-gray-800 hover:border hover:border-gray-800"
+                border border-white hover:bg-white hover:text-gray-800 hover:border hover:border-gray-800 mobile:px-4 mobile:py-2 mobile:text-sm"
     >
       <Link to={to}>{text}</Link>
     </button>

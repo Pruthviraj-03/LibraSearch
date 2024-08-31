@@ -29,7 +29,7 @@ const ScrollToTop = () => {
         <span
           onClick={scrollTop}
           className="z-50 fixed bottom-16 right-10 border-2 border-black bg-black text-white text-4xl 
-            rounded-full opacity-70"
+            rounded-full opacity-70 mobile:right-4"
           style={{ display: visible ? "inline" : "none" }}
         >
           <FaArrowCircleUp />

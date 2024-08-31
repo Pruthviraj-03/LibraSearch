@@ -36,16 +36,16 @@ const LimBooks = () => {
   };
 
   return (
-    <div className="py-20 w-full bg-gray-100">
+    <div className="py-20 w-full bg-gray-100 mobile:py-8">
       {loading ? (
         <Spinner />
       ) : (
-        <div className="mx-auto w-4/5 flex flex-wrap gap-11 py-10">
+        <div className="mx-auto w-4/5 flex flex-wrap gap-11 py-10 laptop:w-11/12 tablet:w-11/12 tablet:mt-96 tablet:pt-30 mobile:py-0">
           {books.slice(0, 8).map((curElem) => {
             return (
               <div
                 key={curElem.rank}
-                className="max-w-xs mx-auto overflow-hidden bg-white rounded-lg shadow-xl border"
+                className="max-w-xs mx-auto overflow-hidden bg-white rounded-lg shadow-xl"
               >
                 <img
                   className="object-cover w-full h-48 mt-1"
